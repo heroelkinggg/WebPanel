@@ -1,0 +1,28 @@
+Create a complete server-side application using PHP that includes a web-based panel to receive and display data from an Android application.
+
+**Requirements:**
+
+1.  **Backend (PHP):**
+    *   Create a PHP script named `receive.php` that can receive HTTP POST requests.
+    *   The script should expect a single parameter: `deviceName`.
+    *   It should sanitize the received data to prevent security vulnerabilities.
+    *   Store the received device name along with a timestamp in a simple text file (`devices.txt`) on the server. Each entry should be on a new line in the format: `YYYY-MM-DD HH:MM:SS - [Device Name]`.
+
+2.  **Frontend (HTML/CSS):**
+    *   Create an HTML file named `panel.html` that serves as the admin panel.
+    *   The panel should have a clean and simple interface.
+    *   It should automatically refresh every 10 seconds to display the latest data.
+    *   The panel must read the `devices.txt` file and display its contents in a clear, readable format (e.g., in a table or a styled list).
+
+3.  **Security:**
+    *   Ensure that the `devices.txt` file is not directly accessible from the web.
+    *   Sanitize all data to prevent XSS and other injection attacks.
+
+**Deliverables:**
+
+*   `receive.php`: The PHP script to handle incoming data.
+*   `panel.html`: The HTML file for the admin panel.
+*   `.htaccess` (optional but recommended): To restrict direct access to the data file.
+*   A brief explanation of how to set up and use the panel.
+
+The final panel should be easy to deploy on a standard web server with PHP support.

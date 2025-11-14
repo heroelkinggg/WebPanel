@@ -1,0 +1,53 @@
+Create a complete server-side application using PHP to act as a backend for an Android application. The server needs to receive data from the app and display it on a simple web panel.
+
+**Project Goal:**
+The Android application, xHERO, sends the device's model name to the server upon its first launch. The server's job is to accept this data, store it, and display a list of all devices that have checked in.
+
+**Critical Requirement for `receive.php`:**
+The Android application uses a background task manager that requires a clear success or failure signal. Therefore, upon successfully receiving and saving the data, the `receive.php` script **MUST** return an HTTP `200 OK` status code. If it doesn't, the Android app will assume the task failed and will keep retrying, which is inefficient. Any other status code will be interpreted as a failure or a temporary server error.
+
+--- 
+
+### **Backend Script: `receive.php`**
+
+1.  **Endpoint:** This script will be the target for the Android app's POST request.
+2.  **Method:** It must accept `HTTP POST` requests.
+3.  **Parameter:** It must expect a single parameter named `deviceName`.
+4.  **Processing Logic:**
+    *   Check if the `deviceName` parameter exists and is not empty. If not, return an `HTTP 400 Bad Request` status.
+    *   Sanitize the received `deviceName` string to prevent XSS attacks. Use `htmlspecialchars()`.
+    *   Get the current server date and time.
+    *   Open a text file named `devices.txt` in append mode.
+    *   Write the new entry on a new line in the format: `YYYY-MM-DD HH:MM:SS - [Device Name]`. 
+    *   Example: `2023-10-27 14:35:10 - Pixel 7 Pro`
+5.  **Response:**
+    *   If the data is written successfully, the script **must** end by sending a `200 OK` status code and can have an empty response body.
+    *   If the file cannot be opened or written to, the script should return an `HTTP 500 Internal Server Error` status.
+
+### **Frontend Panel: `panel.html` or `index.php`**
+
+1.  **Purpose:** To provide a simple, view-only web interface to see the collected data.
+2.  **Display Logic:**
+    *   Read the contents of the `devices.txt` file.
+    *   Display the data in a clean HTML table with two columns: "Timestamp" and "Device Name".
+    *   If the `devices.txt` file is empty or doesn't exist, the panel should show a message like "No devices have checked in yet."
+3.  **Auto-Refresh:**
+    *   The page must automatically refresh every 15 seconds to display the latest data without requiring a manual reload. A `<meta http-equiv="refresh" content="15">` tag is sufficient for this.
+    *   Optionally, display a "Last updated" timestamp on the panel.
+
+### **Security**
+
+1.  **Input Sanitization:** As mentioned, all incoming data must be sanitized with `htmlspecialchars()` before being stored or displayed.
+2.  **Data File Protection:** Prevent direct public access to the `devices.txt` file via a URL. The recommended method is to create a `.htaccess` file in the same directory with the following content:
+    ```
+    <Files "devices.txt">
+        Require all denied
+    </Files>
+    ```
+
+### **Deliverables**
+
+1.  **`receive.php`:** The PHP script that handles the incoming POST requests from the Android app.
+2.  **`panel.html` (or `index.php`):** The PHP/HTML file for the web panel.
+3.  **`.htaccess`:** The configuration file to protect the data file.
+4.  A short guide on how to upload and use the files on a standard PHP-enabled web server.
